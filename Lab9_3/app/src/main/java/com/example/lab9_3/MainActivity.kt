@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.ref.WeakReference
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,55 +18,61 @@ class MainActivity : AppCompatActivity() {
                 ed_height.length() < 1 ->Toast.makeText(this,"請輸入身高",Toast.LENGTH_SHORT).show()
                 ed_weight.length() < 1 ->Toast.makeText(this,"請輸入體重",Toast.LENGTH_SHORT).show()
 
-                else -> runAsyncTask()
+                else -> MyTask(this).execute()
             }
         }
     }
-    private fun runAsyncTask(){
-        object :AsyncTask<Void,Int,Boolean>(){
-            override fun onPreExecute() {
-                super.onPreExecute()
-                tv_weight.text = "標準體重\n無"
-                tv_bmi.text = "體脂肪\n無"
+    private class MyTask internal constructor(context: MainActivity) : AsyncTask<Void, Int, String>() {
+        private val activityReference: WeakReference<MainActivity> = WeakReference(context)
+        val activity = activityReference.get()
 
-                progressBar2.progress = 0
-                tv_progress.text = "0%"
-                ll_progress.visibility = View.VISIBLE
-            }
+        override fun doInBackground(vararg params: Void?): String {
+            var progress = 0
 
-            override fun doInBackground(vararg params: Void?): Boolean {
-                var progress = 0
-
-                while (progress <= 100){
-                    try {
-                        Thread.sleep(50)
-                        publishProgress(progress)
-                        progress++
-                    }catch (e:InterruptedException){
-                        e.printStackTrace()
-                    }
-                }
-                return true
-            }
-
-            override fun onProgressUpdate(vararg values: Int?) {
-                super.onProgressUpdate(*values)
-                values[0]?.let {
-                    progressBar2.progress = it
-                    tv_progress.text = "$it%"
+            while (progress <= 100){
+                try {
+                    Thread.sleep(50)
+                    publishProgress(progress)
+                    progress++
+                }catch (e:InterruptedException){
+                    e.printStackTrace()
                 }
             }
+            return "task finished"
+        }
+        override fun onPreExecute() {
+            super.onPreExecute()
+            if (activity != null) {
+                activity.tv_weight.text = "標準體重\n無"
+                activity.tv_bmi.text = "體脂肪\n無"
 
-            override fun onPostExecute(result: Boolean?) {
-                ll_progress.visibility = View.GONE
+                activity.progressBar2.progress = 0
+                activity.tv_progress.text = "0%"
+                activity.ll_progress.visibility = View.VISIBLE
+            }
 
-                val cal_height = ed_height.text.toString().toDouble()
-                val cal_weight = ed_weight.text.toString().toDouble()
+        }
+        override fun onProgressUpdate(vararg values: Int?) {
+            super.onProgressUpdate(*values)
+            values[0]?.let {
+                if (activity != null) {
+                    activity.progressBar2.progress = it
+                    activity.tv_progress.text = "$it%"
+                }
+
+            }
+        }
+
+        override fun onPostExecute(result: String?) {
+            if (activity != null) {
+                activity.ll_progress.visibility = View.GONE
+                val cal_height =  activity.ed_height.text.toString().toDouble()
+                val cal_weight =  activity.ed_weight.text.toString().toDouble()
 
                 val cal_standweight:Double
                 val cal_bodyfat : Double
 
-                if(radioButton.isChecked){
+                if( activity.radioButton.isChecked){
                     cal_standweight = (cal_height - 80) * 0.7
                     cal_bodyfat = (cal_weight -0.88 * cal_standweight) / cal_weight * 100
                 }else{
@@ -73,12 +80,67 @@ class MainActivity : AppCompatActivity() {
                     cal_bodyfat = (cal_weight -0.82 * cal_standweight) / cal_weight * 100
                 }
 
-                tv_weight.text = "標準體重 \n${String.format("%.2f",cal_standweight)}"
-                tv_bmi.text = "體脂肪 \n${String.format("%.2f", cal_bodyfat)}"
+                activity.tv_weight.text = "標準體重 \n${String.format("%.2f",cal_standweight)}"
+                activity.tv_bmi.text = "體脂肪 \n${String.format("%.2f", cal_bodyfat)}"
             }
         }
-
-
     }
+//    private fun runAsyncTask(){
+//        object :AsyncTask<Void,Int,Boolean>(){
+//            override fun onPreExecute() {
+//                super.onPreExecute()
+//                tv_weight.text = "標準體重\n無"
+//                tv_bmi.text = "體脂肪\n無"
+//
+//                progressBar2.progress = 0
+//                tv_progress.text = "0%"
+//                ll_progress.visibility = View.VISIBLE
+//            }
+//
+//            override fun doInBackground(vararg params: Void?): Boolean {
+//                var progress = 0
+//
+//                while (progress <= 100){
+//                    try {
+//                        Thread.sleep(50)
+//                        publishProgress(progress)
+//                        progress++
+//                    }catch (e:InterruptedException){
+//                        e.printStackTrace()
+//                    }
+//                }
+//                return true
+//            }
+//
+//            override fun onProgressUpdate(vararg values: Int?) {
+//                super.onProgressUpdate(*values)
+//                values[0]?.let {
+//                    progressBar2.progress = it
+//                    tv_progress.text = "$it%"
+//                }
+//            }
+//
+//            override fun onPostExecute(result: Boolean?) {
+//                ll_progress.visibility = View.GONE
+//
+//                val cal_height = ed_height.text.toString().toDouble()
+//                val cal_weight = ed_weight.text.toString().toDouble()
+//
+//                val cal_standweight:Double
+//                val cal_bodyfat : Double
+//
+//                if(radioButton.isChecked){
+//                    cal_standweight = (cal_height - 80) * 0.7
+//                    cal_bodyfat = (cal_weight -0.88 * cal_standweight) / cal_weight * 100
+//                }else{
+//                    cal_standweight = (cal_height - 70) * 0.6
+//                    cal_bodyfat = (cal_weight -0.82 * cal_standweight) / cal_weight * 100
+//                }
+//
+//                tv_weight.text = "標準體重 \n${String.format("%.2f",cal_standweight)}"
+//                tv_bmi.text = "體脂肪 \n${String.format("%.2f", cal_bodyfat)}"
+//            }
+//        }
+//}
 }
 
