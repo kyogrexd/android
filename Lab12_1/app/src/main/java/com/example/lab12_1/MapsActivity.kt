@@ -75,8 +75,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val polylineOpt = PolylineOptions()
         polylineOpt.add(LatLng(25.033611,121.565000))
-        polylineOpt.add(LatLng(25.047924,121.517081))
         polylineOpt.add(LatLng(25.032728,121.565137))
+        polylineOpt.add(LatLng(25.047924,121.517081))
 
         val polyline = googleMap.addPolyline(polylineOpt)
         polyline.width = 10f
