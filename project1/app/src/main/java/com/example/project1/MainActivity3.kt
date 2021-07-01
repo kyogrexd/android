@@ -1,5 +1,6 @@
 package com.example.project1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -55,7 +56,6 @@ class MainActivity3 : AppCompatActivity(),SearchAdapter2.OnItemClickListener {
 
         scope.launch {
             thirdTask()
-
         }
 
     }
@@ -81,7 +81,7 @@ class MainActivity3 : AppCompatActivity(),SearchAdapter2.OnItemClickListener {
             withContext(Dispatchers.Main){
                 System.out.println("start")
             }
-            var startPt :String = ""
+            var startPt : String = ""
             var endPt : String = ""
 
             val today = getToday()
@@ -192,5 +192,10 @@ class MainActivity3 : AppCompatActivity(),SearchAdapter2.OnItemClickListener {
 
     override fun onItemClick(position: Int, TrainNo : String) {
         System.out.println(TrainNo)
+        val bundle = Bundle()
+        bundle.putString("TrainNo",TrainNo)
+        val i = Intent(this,MainActivity4::class.java)
+        i.putExtras(bundle)
+        startActivity(i)
     }
 }
