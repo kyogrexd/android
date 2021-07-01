@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#99A2D6"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/stationST"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="站名"
+            android:textColor="#000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/startST"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:maxLines="10"
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text = "設定起點站"/>
+        <Button
+            android:id="@+id/endST"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:maxLines="10"
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text = "設定終點站"/>
+        <Button
+            android:id="@+id/restaurantST"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:maxLines="10"
+            android:textColor="#000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:text = "餐廳"/>
+
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

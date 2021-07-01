@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".MyAdapter">
 
     <View
@@ -38,7 +38,7 @@
         android:layout_marginBottom="8dp"
         android:text="09000000"
         app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
 
     <ImageView

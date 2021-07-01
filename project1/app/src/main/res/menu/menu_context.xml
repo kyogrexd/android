@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--item android:id="@+id/station"
+        android:title="站名"/-->
+    <item android:id="@+id/startSt"
+        android:title="設定成起點"/>
+    <item android:id="@+id/endSt"
+        android:title="設定成終點"/>
+    <item android:id="@+id/restaurant"
+        android:title="附近餐廳"/>
+    <item android:id="@+id/cancel"
+        android:title="取消"/>
+
+</menu>
