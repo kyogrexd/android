@@ -1,6 +1,7 @@
 package com.example.project1
 
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class SearchAdapter3 (private val station3:ArrayList<today_TrainNo>, private val listener :OnItemClickListener):
+class SearchAdapter3 (private val station3 : ArrayList<today_TrainNo>,private val startPtName : String,private val endPtName : String, private val listener : OnItemClickListener):
         RecyclerView.Adapter<SearchAdapter3.ViewHolder>() {
 
     inner class ViewHolder(v:View):RecyclerView.ViewHolder(v), View.OnClickListener{
@@ -41,6 +42,13 @@ class SearchAdapter3 (private val station3:ArrayList<today_TrainNo>, private val
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tv_TrainNoST.text = "${station3[0].StopTimes[position].StopSequence}. ${station3[0].StopTimes[position].StationName.Zh_tw}站"
         holder.tv_TrainNoSTime.text = station3[0].StopTimes[position].DepartureTime
+        if ("${station3[0].StopTimes[position].StationName.Zh_tw}站" == startPtName) {
+            holder.itemView.setBackgroundColor(Color.YELLOW)
+        }
+        else if ("${station3[0].StopTimes[position].StationName.Zh_tw}站" == endPtName) {
+            holder.itemView.setBackgroundColor(Color.YELLOW)
+        }
+
     }
 
     override fun getItemCount() = station3[0].StopTimes.size

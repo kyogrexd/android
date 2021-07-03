@@ -50,6 +50,7 @@ class MainActivity3 : AppCompatActivity(),SearchAdapter2.OnItemClickListener {
     private lateinit var startPtName : String
     private lateinit var endPtName : String
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main3)
@@ -194,6 +195,8 @@ class MainActivity3 : AppCompatActivity(),SearchAdapter2.OnItemClickListener {
         System.out.println(TrainNo)
         val bundle = Bundle()
         bundle.putString("TrainNo",TrainNo)
+        bundle.putString("startPtName",startPtName)
+        bundle.putString("endPtName",endPtName)
         val i = Intent(this,MainActivity4::class.java)
         i.putExtras(bundle)
         startActivity(i)

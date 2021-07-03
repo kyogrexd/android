@@ -66,8 +66,12 @@ class MainActivity4 : AppCompatActivity(),SearchAdapter3.OnItemClickListener {
                 System.out.println("start")
             }
             var trainNO : String = ""
+            var startPtName : String = ""
+            var endPtName : String = ""
             intent?.extras?.let {
                 trainNO = it.getString("TrainNo").toString()
+                startPtName = it.getString("startPtName").toString()
+                endPtName = it.getString("endPtName").toString()
             }
 
             var connection: HttpURLConnection? = null
@@ -144,7 +148,7 @@ class MainActivity4 : AppCompatActivity(),SearchAdapter3.OnItemClickListener {
                 linearLayoutManger.height
                 recyclerView3.layoutManager = linearLayoutManger
 
-                adapter3 = SearchAdapter3(myItemList,this@MainActivity4)
+                adapter3 = SearchAdapter3(myItemList,startPtName,endPtName,this@MainActivity4)
                 recyclerView3.adapter = adapter3
 
             }

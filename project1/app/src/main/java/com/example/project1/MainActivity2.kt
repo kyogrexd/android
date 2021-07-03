@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.SearchView
 import android.widget.Toast
 
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -38,6 +39,7 @@ data class Station(
         val StationAddress:String,
         val StationPosition : stationpostion
 ){
+
     data class  stationpostion(
             val PositionLon: Double,
             val PositionLat: Double
@@ -66,9 +68,20 @@ class MainActivity2 : AppCompatActivity() ,SearchAdapter.OnItemClickListener{
             secTask()
 
         }
+        sv_station.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return false
+            }
+
+        })
 
     }
+
 
     fun getServerTime(): String {
         val calendar = Calendar.getInstance()

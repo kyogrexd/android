@@ -1,7 +1,11 @@
 package com.example.project1
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 
 import android.os.Bundle
@@ -18,12 +22,15 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.Gson
 
 import com.google.gson.GsonBuilder
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.*
+import okhttp3.*
 import java.io.BufferedReader
+import java.io.IOException
 import java.io.InputStreamReader
 
 import java.net.HttpURLConnection
@@ -49,6 +56,25 @@ data class StationPt(
     )
 }
 
+//class Data{
+//    var lastIndex  = 0
+//    var count = 0
+//    var type = intArrayOf(0)
+//    var lat = 0.0
+//    var lng = 0.0
+//    var range = ""
+//}
+//class getResData{
+//    lateinit var results: Result
+//    class Result{
+//        lateinit var content :Array<Content>
+//        class Content{
+//            val name = ""
+//            val rating = 0.0
+//            val vicinity = ""
+//        }
+//    }
+//}
 
 
 class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener {
@@ -78,12 +104,33 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
             }
         }
     }
+//    private val receiver: BroadcastReceiver = object :
+//        BroadcastReceiver(){
+//        override fun onReceive(context: Context, intent: Intent) {
+//            intent.extras?.getString("json").let {
+//                val data = Gson().fromJson(it,getResData::class.java)
+//                val items = arrayOfNulls<String>(data.results.content.size)
+//
+//                for (i in 0 until data.results.content.size){
+//                    items[i] = "\n餐廳:${data.results.content[i].name}\n地址:${data.results.content[i].vicinity}" +
+//                            "\n評價:${data.results.content[i].rating}\n"
+//                    this@MainActivity.runOnUiThread {
+//                        AlertDialog.Builder(this@MainActivity)
+//                            .setTitle("附近餐廳")
+//                            .setItems(items,null)
+//                            .show()
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+//        val intenfilter = IntentFilter("MyMessage")
+//        registerReceiver(receiver,intenfilter)
 
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)!=
                 PackageManager.PERMISSION_GRANTED)
@@ -183,6 +230,8 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
 
     override fun onInfoWindowClick(marker: Marker) {
         //marker.showInfoWindow()
+        System.out.println(marker.position.latitude)
+        System.out.println(marker.position.longitude)
         val popupMenu = PopupMenu(this, button3)
         popupMenu.menuInflater.inflate(R.menu.menu_context, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { menuItem ->
@@ -200,6 +249,38 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
             }
             else if (id == R.id.restaurant){
                 System.out.println("餐廳")
+                System.out.println(marker.position.latitude)
+                System.out.println(marker.position.longitude)
+                val bundle = Bundle()
+                bundle.putDouble("lat",marker.position.latitude)
+                bundle.putDouble("lng",marker.position.longitude)
+                val i = Intent(this,MainActivity5::class.java)
+                i.putExtras(bundle)
+                startActivity(i)
+//                val data = Data()
+//                data.lastIndex = -1
+//                data.count = 15
+//                data.type = intArrayOf(7)
+//                data.lat = marker.position.latitude
+//                data.lng = marker.position.longitude
+//                data.range = "2000"
+//
+//                val json = Gson().toJson(data)
+//                System.out.println(json)
+//
+//                val body = RequestBody.create(
+//                    MediaType.parse("application/json; charset=utf-8"),json)
+//                val req = Request.Builder()
+//                    .url("https://api.bluenet-ride.com/v2_0/lineBot/restaurant/get")
+//                    .post(body).build()
+//                OkHttpClient().newCall(req).enqueue(object : Callback {
+//                    override fun onFailure(call: Call, e: IOException) {
+//                        Log.e("查詢失敗","$e")
+//                    }
+//                    override fun onResponse(call: Call, response: Response) {
+//                        sendBroadcast(Intent("MyMessage").putExtra("json",response.body()?.string()))
+//                    }
+//                })
             }
             false
         }
@@ -279,20 +360,19 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
                 // 返回的數據已經過解壓
                 //val buffer = StringBuffer()
                 var line: String = `in`.readLine()
+
                 val gson = GsonBuilder().create()
                 val obj : List<StationPt> = gson.fromJson(line, Array<StationPt>::class.java).toList()
-
+                System.out.println(obj)
                 for(i in 0 until obj.size){
                     stationPtList.add(StationPt(obj[i].StationID,obj[i].StationPosition,obj[i].StationName))
                 }
 
-
-
                 var marker = MarkerOptions()
 
                 for(i in 0 until obj.size) {
-                    System.out.println(obj[i].StationPosition.PositionLat)
-                    System.out.println(obj[i].StationPosition.PositionLon)
+//                    System.out.println(obj[i].StationPosition.PositionLat)
+//                    System.out.println(obj[i].StationPosition.PositionLon)
                     marker.position(LatLng(obj[i].StationPosition.PositionLat, obj[i].StationPosition.PositionLon))
                     marker.title(obj[i].StationName.Zh_tw + "站")
                     marker.draggable(true)
@@ -308,6 +388,10 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
         }
 
     }
+//    override fun onDestroy() {
+//        super.onDestroy()
+//        unregisterReceiver(receiver)
+//    }
 
 
 
