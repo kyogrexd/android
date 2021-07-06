@@ -128,10 +128,7 @@ class MainActivity4 : AppCompatActivity(),SearchAdapter3.OnItemClickListener {
                     System.out.println(obj[i].StopTimes)
                 }
 
-
                 `in`.close()
-
-
 
             } catch (e: ProtocolException) {
                 e.printStackTrace()

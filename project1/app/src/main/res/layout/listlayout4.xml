@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_Restaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="餐聽"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#5B04F4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_Res" />
+
+    <TextView
+        android:id="@+id/tv_ResAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="地址"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintStart_toStartOf="@+id/tv_Restaurant"
+        app:layout_constraintTop_toBottomOf="@+id/tv_Restaurant" />
+
+    <TextView
+        android:id="@+id/tv_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="距離"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintStart_toStartOf="@+id/tv_Restaurant"
+        app:layout_constraintTop_toBottomOf="@+id/tv_appraise" />
+
+    <TextView
+        android:id="@+id/tv_appraise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="評價"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FB0055"
+        app:layout_constraintStart_toStartOf="@+id/tv_Restaurant"
+        app:layout_constraintTop_toBottomOf="@+id/tv_ResAddress" />
+
+    <ImageView
+        android:id="@+id/img_Res"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_foreground" />
+</androidx.constraintlayout.widget.ConstraintLayout>

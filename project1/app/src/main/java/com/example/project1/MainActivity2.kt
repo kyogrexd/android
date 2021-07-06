@@ -149,6 +149,7 @@ class MainActivity2 : AppCompatActivity() ,SearchAdapter.OnItemClickListener{
                     myItemList.add(Station(obj[i].StationName,obj[i].StationAddress,obj[i].StationPosition))
                     //System.out.println(obj[i].StationName)
                 }
+                System.out.println(myItemList)
 
 
                 `in`.close()

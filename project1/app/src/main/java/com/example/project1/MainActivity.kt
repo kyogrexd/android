@@ -2,10 +2,7 @@ package com.example.project1
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 
 import android.os.Bundle
@@ -72,6 +69,9 @@ data class StationPt(
 //            val name = ""
 //            val rating = 0.0
 //            val vicinity = ""
+//            val reviewsNumber = 0
+//            var lat = 0.0
+//            var lng = 0.0
 //        }
 //    }
 //}
@@ -104,6 +104,8 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
             }
         }
     }
+
+
 //    private val receiver: BroadcastReceiver = object :
 //        BroadcastReceiver(){
 //        override fun onReceive(context: Context, intent: Intent) {
@@ -113,10 +115,10 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
 //
 //                for (i in 0 until data.results.content.size){
 //                    items[i] = "\n餐廳:${data.results.content[i].name}\n地址:${data.results.content[i].vicinity}" +
-//                            "\n評價:${data.results.content[i].rating}\n"
+//                            "\n評價:${data.results.content[i].rating}(${data.results.content[i].reviewsNumber})\n"
 //                    this@MainActivity.runOnUiThread {
 //                        AlertDialog.Builder(this@MainActivity)
-//                            .setTitle("附近餐廳")
+//                            .setTitle("附近餐廳").setNegativeButton("ok",null)
 //                            .setItems(items,null)
 //                            .show()
 //                    }
@@ -257,6 +259,8 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
                 val i = Intent(this,MainActivity5::class.java)
                 i.putExtras(bundle)
                 startActivity(i)
+
+
 //                val data = Data()
 //                data.lastIndex = -1
 //                data.count = 15
