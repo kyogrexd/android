@@ -28,19 +28,10 @@ class Data{
     var range = ""
 }
 
-//class getResData{
-//    lateinit var results: Result
-//    class Result{
-//        lateinit var content :Array<Content>
-//        class Content{
-//            val name = ""
-//            val rating = ""
-//            val vicinity = ""
-//        }
-//    }
-//}
+
 data class getResData(
-        val results : Result
+        val results : Result,
+        val status : Int
 ){
     data class Result(
             val content : ArrayList<Content>
@@ -107,6 +98,8 @@ class MainActivity5 : AppCompatActivity(),SearchAdapter4.OnItemClickListener {
                 //System.out.println(resultData)
                 System.out.println("response")
                 val obj = Gson().fromJson(resultData,getResData::class.java)
+
+                System.out.println(obj.status)
                 for (i in 0 until obj.results.content.size) {
                     myItemList.add(getResData.Result.Content(obj.results.content[i].name,obj.results.content[i].rating,
                         obj.results.content[i].vicinity,obj.results.content[i].reviewsNumber,obj.results.content[i].photo,

@@ -53,28 +53,7 @@ data class StationPt(
     )
 }
 
-//class Data{
-//    var lastIndex  = 0
-//    var count = 0
-//    var type = intArrayOf(0)
-//    var lat = 0.0
-//    var lng = 0.0
-//    var range = ""
-//}
-//class getResData{
-//    lateinit var results: Result
-//    class Result{
-//        lateinit var content :Array<Content>
-//        class Content{
-//            val name = ""
-//            val rating = 0.0
-//            val vicinity = ""
-//            val reviewsNumber = 0
-//            var lat = 0.0
-//            var lng = 0.0
-//        }
-//    }
-//}
+
 
 
 class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWindowClickListener {
@@ -106,33 +85,13 @@ class MainActivity : AppCompatActivity() , OnMapReadyCallback,GoogleMap.OnInfoWi
     }
 
 
-//    private val receiver: BroadcastReceiver = object :
-//        BroadcastReceiver(){
-//        override fun onReceive(context: Context, intent: Intent) {
-//            intent.extras?.getString("json").let {
-//                val data = Gson().fromJson(it,getResData::class.java)
-//                val items = arrayOfNulls<String>(data.results.content.size)
-//
-//                for (i in 0 until data.results.content.size){
-//                    items[i] = "\n餐廳:${data.results.content[i].name}\n地址:${data.results.content[i].vicinity}" +
-//                            "\n評價:${data.results.content[i].rating}(${data.results.content[i].reviewsNumber})\n"
-//                    this@MainActivity.runOnUiThread {
-//                        AlertDialog.Builder(this@MainActivity)
-//                            .setTitle("附近餐廳").setNegativeButton("ok",null)
-//                            .setItems(items,null)
-//                            .show()
-//                    }
-//                }
-//            }
-//        }
-//    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-//        val intenfilter = IntentFilter("MyMessage")
-//        registerReceiver(receiver,intenfilter)
+
 
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)!=
                 PackageManager.PERMISSION_GRANTED)
