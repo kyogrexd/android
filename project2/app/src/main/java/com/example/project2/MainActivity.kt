@@ -55,11 +55,11 @@ data class getYTApi(
     }
 }
 
-class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
+class MainActivity : YouTubeBaseActivity(){
     var scope = CoroutineScope(Dispatchers.Default)
     var getYtUrl = ""
     private lateinit var video_statue : YouTubePlayer
-    private lateinit var adapter : firstAdapter
+    private lateinit var adapter : listViewAdapter
     val myItemList = arrayListOf<getYTApi.Result.CaptionResult.Results.Captions>()
     var flag = true
     var videoID = ""
@@ -69,8 +69,6 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
 
         var reqData = req_Data()
         reqData.guestKey = "44f6cfed-b251-4952-b6ab-34de1a599ae4"
@@ -107,7 +105,6 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
                             )
                     )
                 }
-
                 scope.launch {
                     firstTask()
                 }
@@ -128,6 +125,25 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
                 flag = true
             }
         }
+
+
+        listView.setOnItemClickListener { parent, view, position, id ->
+            video_statue.loadVideo(videoID, myItemList[position].time * 1000)
+            for (i in 0 until listView.childCount){
+                listView.getChildAt(i).setBackgroundColor(Color.WHITE)
+            }
+            if (!flag_Time) {
+                video_statue.pause()
+                listView.smoothScrollToPositionFromTop(position,0)
+                System.out.println("childCount:${listView.childCount}")
+                System.out.println("firstVisiblePosition:${listView.firstVisiblePosition}")
+                listView.deferNotifyDataSetChanged()
+                listView.getChildAt(position - listView.firstVisiblePosition).setBackgroundColor(Color.GREEN)
+            }
+            flag_Time = false
+            s = myItemList[position].time
+        }
+
     }
 
     private fun intilizePlayer(videoId: String) {
@@ -144,8 +160,6 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
             ) {
                 video_statue = p1
                 flag = p2
-
-
                 if (!p2) {
 
                     p1.setPlaybackEventListener(object : PlaybackEventListener {
@@ -197,19 +211,24 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
                             s = 0
                             System.out.println("videoEnd")
                             img_bt.setImageResource(R.drawable.play)
-                            linearLayoutManger.scrollToPositionWithOffset(0,0)
+                            listView.smoothScrollToPositionFromTop(0,0)
                         }
 
                         override fun onError(p0: YouTubePlayer.ErrorReason?) {
                         }
                     })
-                    linearLayoutManger.orientation = LinearLayoutManager.VERTICAL
-                    linearLayoutManger.height
-                    rec_View.layoutManager = linearLayoutManger
 
-                    adapter = firstAdapter(myItemList, currentTime, this@MainActivity)
-                    rec_View.adapter = adapter
 
+                    adapter = listViewAdapter(myItemList)
+                    listView.adapter = adapter
+
+//                    linearLayoutManger.orientation = LinearLayoutManager.VERTICAL
+//                    linearLayoutManger.height
+//                    rec_View.layoutManager = linearLayoutManger
+//
+//                    adapter = firstAdapter(myItemList, currentTime, this@MainActivity)
+//                    rec_View.adapter = adapter
+//
                     video_statue!!.loadVideo(videoId)
                     video_statue.play()
 
@@ -269,56 +288,56 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
     }
 
 
-    override fun onItemClick(position: Int, captions_Time: Int) {
-        video_statue.loadVideo(videoID, captions_Time * 1000)
-        if (!flag_Time) {
-            video_statue.pause()
-            linearLayoutManger.scrollToPositionWithOffset(position,0)
-            //rec_View.setSe
-            System.out.println("childCount : ${rec_View.childCount}")
-            for ( i in 0 until rec_View.childCount){
-                rec_View.getChildAt(i).setBackgroundColor(Color.WHITE)
+//    override fun onItemClick(position: Int, captions_Time: Int) {
+//        video_statue.loadVideo(videoID, captions_Time * 1000)
+//        if (!flag_Time) {
+//            video_statue.pause()
+//            linearLayoutManger.scrollToPositionWithOffset(position,0)
+//            //rec_View.setSe
+//            System.out.println("childCount : ${rec_View.childCount}")
+//            for ( i in 0 until rec_View.childCount){
+//                rec_View.getChildAt(i).setBackgroundColor(Color.WHITE)
+//
+//            }
+//            if (position != linearLayoutManger.findFirstVisibleItemPosition()){
+//                if (rec_View.childCount == 5)  {
+//                    if (position - linearLayoutManger.findFirstVisibleItemPosition() > 0){
+//                        rec_View.getChildAt(position - linearLayoutManger.findFirstVisibleItemPosition()).setBackgroundColor(Color.BLUE)
+//                    }
+//                    else
+//                    {
+//                        rec_View.getChildAt(linearLayoutManger.findFirstVisibleItemPosition() - position).setBackgroundColor(Color.BLUE)
+//                    }
+//                }
+//                else if (rec_View.childCount == 6) {
+//                    rec_View.getChildAt(position - linearLayoutManger.findFirstVisibleItemPosition()).setBackgroundColor(Color.BLUE)
+//                }
+//
+//            }
+//            else {
+//                System.out.println("ok")
+//                if (position == 6) {
+//                    rec_View.getChildAt(1).setBackgroundColor(Color.BLUE)
+//                }
+//                else {
+//                    if ( rec_View.childCount == 6 ){
+//                        rec_View.getChildAt(1).setBackgroundColor(Color.BLUE)
+//                    }
+//                    else {
+//                        rec_View.getChildAt(0).setBackgroundColor(Color.BLUE)
+//                    }
+//                }
+//
+//            }
+//
+//        }
+//
+//        System.out.println("${position}=====${linearLayoutManger.findFirstVisibleItemPosition()}")
 
-            }
-            if (position != linearLayoutManger.findFirstVisibleItemPosition()){
-                if (rec_View.childCount == 5)  {
-                    if (position - linearLayoutManger.findFirstVisibleItemPosition() > 0){
-                        rec_View.getChildAt(position - linearLayoutManger.findFirstVisibleItemPosition()).setBackgroundColor(Color.BLUE)
-                    }
-                    else
-                    {
-                        rec_View.getChildAt(linearLayoutManger.findFirstVisibleItemPosition() - position).setBackgroundColor(Color.BLUE)
-                    }
-                }
-                else if (rec_View.childCount == 6) {
-                    rec_View.getChildAt(position - linearLayoutManger.findFirstVisibleItemPosition()).setBackgroundColor(Color.BLUE)
-                }
-
-            }
-            else {
-                System.out.println("ok")
-                if (position == 6) {
-                    rec_View.getChildAt(1).setBackgroundColor(Color.BLUE)
-                }
-                else {
-                    if ( rec_View.childCount == 6 ){
-                        rec_View.getChildAt(1).setBackgroundColor(Color.BLUE)
-                    }
-                    else {
-                        rec_View.getChildAt(0).setBackgroundColor(Color.BLUE)
-                    }
-                }
-
-            }
-
-        }
-
-        System.out.println("${position}=====${linearLayoutManger.findFirstVisibleItemPosition()}")
-
-        flag_Time = false
-        s = captions_Time
-
-    }
+//        flag_Time = false
+//        s = captions_Time
+//
+//    }
 
     private var m = 0
     private var s = 0
@@ -353,65 +372,56 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
     private val mHandler = Handler(Handler.Callback {
         msg ->
         System.out.println("${currentTime} 秒")
-        for ( i in 0 until rec_View.childCount){
-            rec_View.getChildAt(i).setBackgroundColor(Color.WHITE)
+        for ( i in 0 until listView.childCount){
+            listView.getChildAt(i).setBackgroundColor(Color.WHITE)
         }
 
 
         if (0 <= currentTime && currentTime < myItemList[1].time){
-            linearLayoutManger.scrollToPositionWithOffset(0,0)
-            chageColor(1)
+            //linearLayoutManger.scrollToPositionWithOffset(0,0)
+            listView.smoothScrollToPositionFromTop(0,0)
+            chageColor(0)
         }
         else if (myItemList[1].time <= currentTime && currentTime < myItemList[2].time) {
-            linearLayoutManger.scrollToPositionWithOffset(1,0)
-
-            chageColor(2)
+            listView.smoothScrollToPositionFromTop(1,0)
+            chageColor(1)
         }
         else if (myItemList[2].time <= currentTime && currentTime < myItemList[3].time) {
-            linearLayoutManger.scrollToPositionWithOffset(2,0)
-
-            chageColor(3)
+            listView.smoothScrollToPositionFromTop(2,0)
+            chageColor(2)
         }
         else if (myItemList[3].time <= currentTime && currentTime < myItemList[4].time) {
-            linearLayoutManger.scrollToPositionWithOffset(3,0)
-
-
-            chageColor(4)
+            listView.smoothScrollToPositionFromTop(3,0)
+            chageColor(3)
         }
         else if (myItemList[4].time <= currentTime && currentTime < myItemList[5].time) {
-            linearLayoutManger.scrollToPositionWithOffset(4,0)
-            chageColor(5)
-
+            listView.smoothScrollToPositionFromTop(4,0)
+            chageColor(4)
         }
         else if (myItemList[5].time <= currentTime && currentTime < myItemList[6].time) {
-            linearLayoutManger.scrollToPositionWithOffset(5,0)
-
-            chageColor(6)
+            listView.smoothScrollToPositionFromTop(5,0)
+            chageColor(5)
         }
         else if (myItemList[6].time <= currentTime && currentTime < myItemList[7].time) {
-            linearLayoutManger.scrollToPositionWithOffset(6,0)
+            listView.smoothScrollToPositionFromTop(6,0)
             System.out.println("第7句")
-            chageColor(7)
+            chageColor(6)
         }
         else if (myItemList[7].time <= currentTime && currentTime < myItemList[8].time) {
-            linearLayoutManger.scrollToPositionWithOffset(7,0)
-
-            chageColor(8)
+            listView.smoothScrollToPositionFromTop(7,0)
+            chageColor(7)
         }
         else if (myItemList[8].time <= currentTime && currentTime < myItemList[9].time) {
-            linearLayoutManger.scrollToPositionWithOffset(8,0)
-
-            chageColor(9)
+            listView.smoothScrollToPositionFromTop(8,0)
+            chageColor(8)
         }
         else if (myItemList[9].time <= currentTime && currentTime < myItemList[10].time) {
-            linearLayoutManger.scrollToPositionWithOffset(9,0)
-
-            chageColor(10)
+            listView.smoothScrollToPositionFromTop(9,0)
+            chageColor(9)
         }
         else if (myItemList[10].time <= currentTime ) {
-            linearLayoutManger.scrollToPositionWithOffset(10,0)
-
-            chageColor(11)
+            listView.smoothScrollToPositionFromTop(10,0)
+            chageColor(10)
             //System.out.println("1010101010101010")
         }
 
@@ -419,26 +429,16 @@ class MainActivity : YouTubeBaseActivity(), firstAdapter.OnItemClickListener{
     })
 
     private fun chageColor(position: Int ){
-//        System.out.println(rec_View.childCount)
-//        System.out.println(linearLayoutManger.findFirstCompletelyVisibleItemPosition())
-//        System.out.println("${linearLayoutManger.findFirstVisibleItemPosition()}+++++++++")
-
-        if (rec_View.childCount < 6) {
-            rec_View.getChildAt(0).setBackgroundColor(Color.YELLOW)
-            if (position == 7){
-                rec_View.getChildAt(1).setBackgroundColor(Color.YELLOW)
-            }
+        listView.deferNotifyDataSetChanged()
+        var pos = position - listView.firstVisiblePosition
+        //System.out.println(pos)
+        if (pos >= 0 && pos < listView.childCount){
+            listView.getChildAt(pos).setBackgroundColor(Color.YELLOW)
         }
         else {
-            //System.out.println("${position-rec_View.childCount}=============")
-            if (position > rec_View.childCount){
-                rec_View.getChildAt(position-rec_View.childCount).setBackgroundColor(Color.YELLOW)
-            }
-            else {
-                rec_View.getChildAt(0).setBackgroundColor(Color.YELLOW)
-                System.out.println("結束")
-            }
+            System.out.println("錯誤")
         }
+
     }
 }
 

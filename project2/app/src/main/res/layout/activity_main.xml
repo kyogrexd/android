@@ -25,19 +25,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pv_Yt" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rec_View"
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_bt"
-        app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/listlayout" >
+        >
 
-    </androidx.recyclerview.widget.RecyclerView>
+
+    </ListView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
