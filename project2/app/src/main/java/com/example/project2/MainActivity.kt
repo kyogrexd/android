@@ -66,6 +66,8 @@ class MainActivity : YouTubeBaseActivity(){
     var currentTime : Long = 0
     val linearLayoutManger = LinearLayoutManager(this@MainActivity)
 
+    val str : String? = null
+    var str2 = str?: "1234"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
